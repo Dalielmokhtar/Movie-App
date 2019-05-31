@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import './App.css';
 import Home from './Home';
-import WithLoading from './Loader'
-
+import WithLoading from './Loader';
 const MovieWithLoading = WithLoading(Home)
 
 export default class App extends Component {
@@ -16,7 +15,7 @@ export default class App extends Component {
       loading:true
     })
       
-    }, 3000);
+    }, 500);
   
     
   }

@@ -1,7 +1,8 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap'
-
+import { connect } from "react-redux";
+import {addMovie} from "./action"
 
 
 
@@ -64,6 +65,11 @@ class Example extends React.Component {
       );
     }
   }
+  const mapDispatchToProps =(dispatch)=>({
+    addMovie:(newMovie)=>{
+      dispatch(addMovie(newMovie))
+    }
+   
+  })
   
-  
-  export default Example;
+  export default connect (null, mapDispatchToProps)(Example)

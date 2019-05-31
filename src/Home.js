@@ -2,18 +2,15 @@ import React, { Component } from 'react'
 import Film from './Film'
 import AddMovie from './modal'
 import Rating from './star'
+import { connect } from "react-redux";
+import {getRating} from "./action"
 
-const movie = [
-  { title: 'Avengers', description: 'Film Marvel', image:'https://www.macommune.info/wp-content/uploads/2019/05/avengers-marvel.jpg' , rating: 2 },
-  { title: 'Titanic', description: 'Film Romantique', image:'https://vignette.wikia.nocookie.net/titanic/images/7/79/Affiche_film_Titanic.png/revision/latest?cb=20120716135714&path-prefix=fr', rating: 3 },
-  { title: '300', description: 'Film d"action"', image:"https://www.telerama.fr/sites/tr_master/files/56378a29-95d2-4173-a7b2-bb01e036a2d3_2.jpg", rating: 1 }
-]
-export default class Home extends Component {
+class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
       minrate: 0,
-      movielist: movie,
+      movielist: this.props.movielist,
       search :''
     }
   }
@@ -41,18 +38,19 @@ addNewMovie = ({image, title, description, rating}) => {
           <div className="header">
 
             <input type='' placeholder='Type movie name to search' onChange={(e)=>this.searching(e)}/>
-            <AddMovie addMovie={this.addNewMovie}/>
+            <AddMovie />
             <div className='rating'>
               <p>
                 Minimum rating
             </p>
 
               <div className="star">
-                <Rating modifyRating={this.click} rating={this.state.minrate}/>
+                <Rating modifyRating={this.props.getRating} rating={this.props.rating}/>
               </div>
             </div>
           </div>
-          <Film list={this.state.movielist.filter(el=> el.title.toUpperCase().includes(this.state.search.toUpperCase().trim()) && el.rating>=this.state.minrate ) } />
+          <Film list={this.props.movielist
+            .filter(el=> el.title.toUpperCase().includes(this.state.search.toUpperCase().trim()) && el.rating>=this.props.rating ) } />
         </div>
 
       </div>
@@ -61,3 +59,14 @@ addNewMovie = ({image, title, description, rating}) => {
   }
 }
 
+
+const mapStateToProps =(state)=>({
+  movielist: state.movieReducer,
+  rating: state.ratingReducer
+})
+const mapDispatchToProps=(dispatch)=>({
+  getRating:payload=>
+  dispatch(getRating(payload))
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Home)
